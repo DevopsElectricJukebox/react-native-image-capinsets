@@ -26,6 +26,8 @@ public class RCTImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... params) {
         if (mUri.startsWith("http")) {
             return loadBitmapByExternalURL(mUri);
+        } else if (mUri.startsWith("file")) {
+            return loadBitmapByLocalUrl(mUri);
         }
 
         return loadBitmapByLocalResource(mUri);
@@ -36,6 +38,10 @@ public class RCTImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         return BitmapFactory.decodeResource(mContext.getResources(), mResourceDrawableIdHelper.getResourceDrawableId(mContext, uri), options);
+    }
+
+    private Bitmap loadBitmapByLocalUrl(String uri) {
+        return BitmapFactory.decodeFile(uri.replace("file://","") );
     }
 
     private Bitmap loadBitmapByExternalURL(String uri) {
