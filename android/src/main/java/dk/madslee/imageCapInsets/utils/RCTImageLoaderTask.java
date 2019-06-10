@@ -33,7 +33,9 @@ public class RCTImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
 
 
     private Bitmap loadBitmapByLocalResource(String uri) {
-        return BitmapFactory.decodeResource(mContext.getResources(), mResourceDrawableIdHelper.getResourceDrawableId(mContext, uri));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        return BitmapFactory.decodeResource(mContext.getResources(), mResourceDrawableIdHelper.getResourceDrawableId(mContext, uri), options);
     }
 
     private Bitmap loadBitmapByExternalURL(String uri) {
