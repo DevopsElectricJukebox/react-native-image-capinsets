@@ -1,5 +1,6 @@
 package dk.madslee.imageCapInsets;
 
+import android.util.Log;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.NinePatchDrawable;
@@ -10,6 +11,8 @@ import dk.madslee.imageCapInsets.utils.RCTImageLoaderTask;
 
 
 public class RCTImageCapInsetView extends ImageView {
+
+    private static final String TAG = "RCTImageCapInsetView";
     private Rect mCapInsets;
     private String mUri;
 
@@ -41,6 +44,10 @@ public class RCTImageCapInsetView extends ImageView {
         RCTImageLoaderTask task = new RCTImageLoaderTask(mUri, getContext(), new RCTImageLoaderListener() {
             @Override
             public void onImageLoaded(Bitmap bitmap) {
+                if (bitmap == null) {
+                    Log.w(TAG, "failed to load bitmap from " + mUri);
+                    return;
+                }
                 int ratio = Math.round(bitmap.getDensity() / 160);
                 int top = mCapInsets.top * ratio;
                 int right = bitmap.getWidth() - (mCapInsets.right * ratio);
